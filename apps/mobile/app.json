@@ -57,6 +57,13 @@
           "icon": "./assets/images/notification-icon.png",
           "color": "#FF6B35"
         }
+      ],
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.loadly.app",
+          "enableGooglePay": false
+        }
       ]
     ],
     "experiments": {
