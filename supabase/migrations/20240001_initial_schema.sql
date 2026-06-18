@@ -2,9 +2,7 @@
 -- LOADLY — Initial Schema
 -- ─────────────────────────────────────────────────────────────────────────────
 
--- Enable UUID generation
-create extension if not exists "uuid-ossp";
-create extension if not exists "postgis"; -- for future geo queries
+-- uuid-ossp not needed — using gen_random_uuid() (built-in Postgres 13+)
 
 -- ─── Enums ───────────────────────────────────────────────────────────────────
 
@@ -70,7 +68,7 @@ create policy "driver_profiles: own row" on public.driver_profiles
 -- ─── Vehicles ────────────────────────────────────────────────────────────────
 
 create table public.vehicles (
-  id                      uuid primary key default uuid_generate_v4(),
+  id                      uuid primary key default gen_random_uuid(),
   driver_id               uuid not null references public.users(id) on delete cascade,
   category                vehicle_category not null,
   make                    text not null,
@@ -95,7 +93,7 @@ create policy "vehicles: driver owns" on public.vehicles
 -- ─── Pricing rules ───────────────────────────────────────────────────────────
 
 create table public.pricing_rules (
-  id                      uuid primary key default uuid_generate_v4(),
+  id                      uuid primary key default gen_random_uuid(),
   vehicle_category        vehicle_category not null,
   base_fee                numeric(10,2) not null,
   per_km_rate             numeric(10,2) not null,
@@ -117,7 +115,7 @@ create policy "pricing_rules: public read" on public.pricing_rules
 -- ─── Helper pricing ──────────────────────────────────────────────────────────
 
 create table public.helper_pricing (
-  id                      uuid primary key default uuid_generate_v4(),
+  id                      uuid primary key default gen_random_uuid(),
   per_helper_base_fee     numeric(10,2) not null,
   per_helper_per_hour     numeric(10,2) not null default 0,
   effective_from          timestamptz not null default now(),
@@ -132,7 +130,7 @@ create policy "helper_pricing: public read" on public.helper_pricing
 -- ─── Bookings ────────────────────────────────────────────────────────────────
 
 create table public.bookings (
-  id                          uuid primary key default uuid_generate_v4(),
+  id                          uuid primary key default gen_random_uuid(),
   customer_id                 uuid not null references public.users(id),
   driver_id                   uuid references public.users(id),
   vehicle_id                  uuid references public.vehicles(id),
@@ -192,7 +190,7 @@ create index bookings_created_idx on public.bookings(created_at desc);
 -- ─── Booking photos ──────────────────────────────────────────────────────────
 
 create table public.booking_photos (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   booking_id  uuid not null references public.bookings(id) on delete cascade,
   url         text not null,
   type        text not null check (type in ('load', 'proof_of_delivery')),
@@ -213,7 +211,7 @@ create policy "booking_photos: booking participant" on public.booking_photos
 -- ─── Booking status history ──────────────────────────────────────────────────
 
 create table public.booking_status_history (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   booking_id  uuid not null references public.bookings(id) on delete cascade,
   status      booking_status not null,
   changed_by  uuid not null references public.users(id),
@@ -251,7 +249,7 @@ create trigger on_booking_status_change
 -- ─── Ratings ─────────────────────────────────────────────────────────────────
 
 create table public.ratings (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   booking_id  uuid not null unique references public.bookings(id),
   customer_id uuid not null references public.users(id),
   driver_id   uuid not null references public.users(id),
@@ -271,7 +269,7 @@ create policy "ratings: driver reads own" on public.ratings
 -- ─── Driver earnings ─────────────────────────────────────────────────────────
 
 create table public.driver_earnings (
-  id              uuid primary key default uuid_generate_v4(),
+  id              uuid primary key default gen_random_uuid(),
   driver_id       uuid not null references public.users(id),
   booking_id      uuid not null unique references public.bookings(id),
   gross_amount    numeric(10,2) not null,
