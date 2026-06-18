@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
   activeBookingTap: { color: 'rgba(255,255,255,0.7)', fontSize: 13, marginTop: 8 },
   bookButton: {
     margin: 16,
-    marginTop: booking => booking ? 0 : 16,
     backgroundColor: Colors.primary,
     borderRadius: 16,
     paddingVertical: 20,

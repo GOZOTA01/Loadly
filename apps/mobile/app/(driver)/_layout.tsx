@@ -1,4 +1,5 @@
 import { Tabs } from 'expo-router'
+import { Text } from 'react-native'
 import { Colors } from '@/lib/colors'
 
 export default function DriverLayout() {
@@ -12,10 +13,10 @@ export default function DriverLayout() {
         tabBarLabelStyle: { fontSize: 12, fontWeight: '600' },
       }}
     >
-      <Tabs.Screen name="home" options={{ title: 'Jobs' }} />
-      <Tabs.Screen name="active-job" options={{ title: 'Active' }} />
-      <Tabs.Screen name="earnings" options={{ title: 'Earnings' }} />
-      <Tabs.Screen name="profile" options={{ title: 'Profile' }} />
+      <Tabs.Screen name="home" options={{ title: 'Jobs', tabBarIcon: () => <Text style={{ fontSize: 20 }}>🚛</Text> }} />
+      <Tabs.Screen name="active-job" options={{ title: 'Active', tabBarIcon: () => <Text style={{ fontSize: 20 }}>📍</Text> }} />
+      <Tabs.Screen name="earnings" options={{ title: 'Earnings', tabBarIcon: () => <Text style={{ fontSize: 20 }}>💰</Text> }} />
+      <Tabs.Screen name="profile" options={{ title: 'Profile', tabBarIcon: () => <Text style={{ fontSize: 20 }}>👤</Text> }} />
     </Tabs>
   )
 }
