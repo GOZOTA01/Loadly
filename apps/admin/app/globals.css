@@ -1,13 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --primary: #FF6B35;
-  --primary-dark: #E55A25;
-  --primary-light: #FFF0EB;
+  /* Brand — matches Loadly logo background */
+  --brand: #3D5166;
+  --brand-dark: #2E3F52;
+  --brand-darker: #243040;
+  --brand-light: #EEF2F6;
+
+  /* Accent — orange for actions */
+  --accent: #FF6B35;
+  --accent-dark: #E55A25;
+  --accent-light: #FFF0EB;
+
+  /* Neutral */
+  --surface: #FFFFFF;
+  --bg: #F4F6F9;
+  --border: #E2E8F0;
+  --text: #1A2332;
+  --text-muted: #64748B;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: #F8F8F8;
-  color: #1A1A2E;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
 }
+
+/* Smooth transitions on interactive elements */
+button, a { transition: all 0.15s ease; }

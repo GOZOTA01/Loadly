@@ -16,10 +16,10 @@ export default async function DriversPage() {
         <p className="text-gray-500 text-sm mt-1">Review and approve driver applications</p>
       </div>
 
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border shadow-sm overflow-hidden" style={{ borderColor: '#E2E8F0' }}>
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-xs text-gray-500 font-medium border-b border-gray-100 bg-gray-50">
+            <tr className="text-left text-xs font-semibold uppercase tracking-wide border-b" style={{ backgroundColor: '#F8FAFC', color: '#64748B', borderColor: '#F1F5F9' }}>
               <th className="px-6 py-3">Driver</th>
               <th className="px-6 py-3">License</th>
               <th className="px-6 py-3">Status</th>
