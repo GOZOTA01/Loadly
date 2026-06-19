@@ -1,4 +1,5 @@
 import { createServerClient } from '@/lib/supabase-server'
+import { Header } from '@/components/layout/Header'
 import { ApproveVehicleButton } from './ApproveVehicleButton'
 
 export default async function VehiclesPage() {
@@ -10,12 +11,9 @@ export default async function VehiclesPage() {
     .order('approval_status')
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-black text-gray-900">Vehicles</h1>
-        <p className="text-gray-500 text-sm mt-1">Review and approve vehicle registrations</p>
-      </div>
-
+    <div>
+      <Header title="Vehicles" subtitle="Review and approve vehicle registrations" />
+      <div className="p-8">
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <table className="w-full text-sm">
           <thead>
@@ -46,10 +44,11 @@ export default async function VehiclesPage() {
               </tr>
             ))}
             {!vehicles?.length && (
-              <tr><td colSpan={6} className="px-6 py-12 text-center text-gray-400">No vehicles registered yet</td></tr>
+              <tr><td colSpan={6} className="px-6 py-16 text-center text-gray-300 text-sm">No vehicles registered yet</td></tr>
             )}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   )

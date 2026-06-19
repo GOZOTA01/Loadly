@@ -1,4 +1,5 @@
 import { createServerClient } from '@/lib/supabase-server'
+import { Header } from '@/components/layout/Header'
 
 export default async function AnalyticsPage() {
   const supabase = await createServerClient()
@@ -30,26 +31,25 @@ export default async function AnalyticsPage() {
   ]
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-black text-gray-900">Analytics</h1>
-        <p className="text-gray-500 text-sm mt-1">Business performance overview</p>
-      </div>
+    <div>
+      <Header title="Analytics" subtitle="Business performance overview" />
+      <div className="p-8 space-y-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+          {stats.map((s) => (
+            <div key={s.label} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+              <p className="text-3xl font-black text-gray-900">{s.value}{s.suffix}</p>
+              <p className="text-sm text-gray-400 mt-2 font-medium">{s.label}</p>
+            </div>
+          ))}
+        </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-        {stats.map((s) => (
-          <div key={s.label} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-            <p className="text-3xl font-black text-gray-900">{s.value}{s.suffix}</p>
-            <p className="text-sm text-gray-500 mt-2 font-medium">{s.label}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-        <p className="text-gray-400 text-sm text-center py-8">
-          Charts and time-series data coming in the next release.<br />
-          Connect a charting library like Recharts to <code className="bg-gray-100 px-1 rounded">driver_earnings</code> and <code className="bg-gray-100 px-1 rounded">bookings</code> tables.
-        </p>
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 flex flex-col items-center justify-center gap-3">
+          <div className="text-4xl">📊</div>
+          <p className="text-gray-500 font-semibold text-sm">Charts coming soon</p>
+          <p className="text-gray-300 text-xs text-center max-w-xs">
+            Time-series charts for revenue and bookings will be added in the next release.
+          </p>
+        </div>
       </div>
     </div>
   )

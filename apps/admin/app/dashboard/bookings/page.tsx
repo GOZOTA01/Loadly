@@ -1,4 +1,5 @@
 import { createServerClient } from '@/lib/supabase-server'
+import { Header } from '@/components/layout/Header'
 
 export default async function BookingsPage() {
   const supabase = await createServerClient()
@@ -10,58 +11,62 @@ export default async function BookingsPage() {
     .limit(50)
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-black text-gray-900">Bookings</h1>
-        <p className="text-gray-500 text-sm mt-1">All delivery bookings</p>
-      </div>
-
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="text-left text-xs text-gray-500 font-medium border-b border-gray-100 bg-gray-50">
-              <th className="px-6 py-3">Pickup</th>
-              <th className="px-6 py-3">Dropoff</th>
-              <th className="px-6 py-3">Vehicle</th>
-              <th className="px-6 py-3">Helpers</th>
-              <th className="px-6 py-3">Status</th>
-              <th className="px-6 py-3">Amount</th>
-              <th className="px-6 py-3">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(bookings ?? []).map((b: any) => (
-              <tr key={b.id} className="border-b border-gray-50 hover:bg-gray-50">
-                <td className="px-6 py-3 font-medium text-gray-800 max-w-[140px] truncate">{b.pickup_address}</td>
-                <td className="px-6 py-3 text-gray-600 max-w-[140px] truncate">{b.dropoff_address}</td>
-                <td className="px-6 py-3 text-gray-600 capitalize">{b.vehicle_category?.replace(/_/g, ' ')}</td>
-                <td className="px-6 py-3 text-center">{b.helper_count > 0 ? <span className="px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-bold">+{b.helper_count}</span> : <span className="text-gray-400">—</span>}</td>
-                <td className="px-6 py-3">
-                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusClass(b.status)}`}>
-                    {b.status?.replace(/_/g, ' ')}
-                  </span>
-                </td>
-                <td className="px-6 py-3 font-bold">{b.total_amount ? `$${b.total_amount}` : '—'}</td>
-                <td className="px-6 py-3 text-gray-500">{new Date(b.created_at).toLocaleDateString()}</td>
+    <div>
+      <Header title="Bookings" subtitle="All delivery requests" />
+      <div className="p-8">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-gray-100">
+                <th className="px-6 py-3.5 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Pickup</th>
+                <th className="px-6 py-3.5 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Dropoff</th>
+                <th className="px-6 py-3.5 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Vehicle</th>
+                <th className="px-6 py-3.5 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Helpers</th>
+                <th className="px-6 py-3.5 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3.5 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Amount</th>
+                <th className="px-6 py-3.5 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Date</th>
               </tr>
-            ))}
-            {!bookings?.length && (
-              <tr><td colSpan={7} className="px-6 py-12 text-center text-gray-400">No bookings yet</td></tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {(bookings ?? []).map((b: any) => (
+                <tr key={b.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-3.5 font-medium text-gray-800 max-w-[150px] truncate">{b.pickup_address}</td>
+                  <td className="px-6 py-3.5 text-gray-500 max-w-[150px] truncate">{b.dropoff_address}</td>
+                  <td className="px-6 py-3.5 text-gray-600 capitalize text-xs font-semibold">{b.vehicle_category?.replace(/_/g, ' ')}</td>
+                  <td className="px-6 py-3.5 text-center">
+                    {b.helper_count > 0
+                      ? <span className="px-2 py-1 bg-orange-50 text-orange-600 rounded-lg text-xs font-bold">+{b.helper_count}</span>
+                      : <span className="text-gray-300">—</span>}
+                  </td>
+                  <td className="px-6 py-3.5"><StatusBadge status={b.status} /></td>
+                  <td className="px-6 py-3.5 font-black text-gray-900">{b.total_amount ? `$${b.total_amount}` : '—'}</td>
+                  <td className="px-6 py-3.5 text-gray-400 text-xs">{new Date(b.created_at).toLocaleDateString()}</td>
+                </tr>
+              ))}
+              {!bookings?.length && (
+                <tr><td colSpan={7} className="px-6 py-16 text-center text-gray-300 text-sm">No bookings yet</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )
 }
 
-function statusClass(status: string) {
-  const map: Record<string, string> = {
-    pending: 'bg-yellow-100 text-yellow-800',
-    assigned: 'bg-blue-100 text-blue-800',
-    in_transit: 'bg-purple-100 text-purple-800',
-    completed: 'bg-green-100 text-green-800',
-    cancelled: 'bg-red-100 text-red-800',
+function StatusBadge({ status }: { status: string }) {
+  const map: Record<string, { bg: string; text: string }> = {
+    pending:    { bg: '#FEF9C3', text: '#854D0E' },
+    assigned:   { bg: '#DBEAFE', text: '#1D4ED8' },
+    in_transit: { bg: '#EDE9FE', text: '#5B21B6' },
+    completed:  { bg: '#D1FAE5', text: '#065F46' },
+    cancelled:  { bg: '#FEE2E2', text: '#991B1B' },
   }
-  return map[status] ?? 'bg-gray-100 text-gray-800'
+  const s = map[status] ?? { bg: '#F3F4F6', text: '#374151' }
+  return (
+    <span className="inline-block px-2 py-0.5 rounded-lg text-[11px] font-bold capitalize"
+      style={{ backgroundColor: s.bg, color: s.text }}>
+      {status?.replace(/_/g, ' ')}
+    </span>
+  )
 }

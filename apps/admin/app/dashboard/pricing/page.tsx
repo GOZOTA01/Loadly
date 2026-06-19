@@ -1,4 +1,5 @@
 import { createServerClient } from '@/lib/supabase-server'
+import { Header } from '@/components/layout/Header'
 
 export default async function PricingPage() {
   const supabase = await createServerClient()
@@ -11,11 +12,9 @@ export default async function PricingPage() {
   const helper = helperPricing?.[0]
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-black text-gray-900">Pricing</h1>
-        <p className="text-gray-500 text-sm mt-1">Current active pricing rules</p>
-      </div>
+    <div>
+      <Header title="Pricing" subtitle="Current active pricing rules" />
+      <div className="p-8 space-y-6">
 
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-100">
@@ -65,7 +64,8 @@ export default async function PricingPage() {
         </div>
       )}
 
-      <p className="text-xs text-gray-400">To update pricing, edit the pricing_rules table in your Supabase dashboard and insert a new row — pricing changes take effect immediately.</p>
+        <p className="text-xs text-gray-400 pb-2">To update pricing, edit the <code className="bg-gray-100 px-1.5 py-0.5 rounded-md font-mono">pricing_rules</code> table in your Supabase dashboard — changes take effect immediately.</p>
+      </div>
     </div>
   )
 }
