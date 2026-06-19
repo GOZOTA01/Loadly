@@ -33,7 +33,7 @@ export default function AdminLoginPage() {
       return
     }
 
-    router.push('/dashboard')
+    window.location.href = '/dashboard'
   }
 
   return (
@@ -75,7 +75,7 @@ export default function AdminLoginPage() {
             disabled={loading}
             className="w-full bg-[#FF6B35] text-white font-bold py-3 rounded-xl hover:bg-[#E55A25] transition-colors disabled:opacity-60"
           >
-            {loading ? 'Signing in…' : 'Sign In'}
+            {loading ? 'Signing in… please wait' : 'Sign In'}
           </button>
         </form>
       </div>
