@@ -36,32 +36,59 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: '#ffffff',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif',
+    }}>
 
-      {/* Top bar */}
-      <header
-        className="h-14 px-8 flex items-center shrink-0"
-        style={{ backgroundColor: '#3A4A54' }}
-      >
+      {/* ── Top bar ───────────────────────────────────── */}
+      <header style={{
+        backgroundColor: '#3A4A54',
+        height: 64,
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: 28,
+        paddingRight: 28,
+        flexShrink: 0,
+      }}>
         <Image
           src="/logo.png"
           alt="Loadly"
-          width={90}
-          height={36}
-          className="object-contain"
+          width={100}
+          height={40}
+          style={{ objectFit: 'contain' }}
           priority
         />
       </header>
 
-      {/* Page body */}
-      <main className="flex-1 flex items-center justify-center px-4 py-16">
-        <div className="w-full max-w-[360px]">
+      {/* ── Page body ─────────────────────────────────── */}
+      <main style={{
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '48px 24px',
+      }}>
+        <div style={{ width: '100%', maxWidth: 380 }}>
 
-          <h1 className="text-[28px] font-black text-gray-900 leading-snug mb-6">
+          {/* Heading */}
+          <h1 style={{
+            fontSize: 30,
+            fontWeight: 900,
+            color: '#111827',
+            lineHeight: 1.25,
+            marginBottom: 28,
+            letterSpacing: '-0.5px',
+          }}>
             What's your email<br />and password?
           </h1>
 
-          <form onSubmit={handleLogin} className="space-y-3">
+          {/* Form */}
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+
             <input
               type="email"
               value={email}
@@ -69,7 +96,9 @@ export default function AdminLoginPage() {
               placeholder="Email address"
               required
               autoComplete="email"
-              className="w-full bg-gray-100 rounded-xl px-4 py-4 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6B35] transition-all"
+              style={inputStyle}
+              onFocus={e => (e.target.style.borderColor = '#FF6B35')}
+              onBlur={e => (e.target.style.borderColor = 'transparent')}
             />
 
             <input
@@ -79,41 +108,96 @@ export default function AdminLoginPage() {
               placeholder="Password"
               required
               autoComplete="current-password"
-              className="w-full bg-gray-100 rounded-xl px-4 py-4 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6B35] transition-all"
+              style={inputStyle}
+              onFocus={e => (e.target.style.borderColor = '#FF6B35')}
+              onBlur={e => (e.target.style.borderColor = 'transparent')}
             />
 
             {error && (
-              <p className="text-red-500 text-xs bg-red-50 rounded-xl px-4 py-3 border border-red-100">
+              <div style={{
+                backgroundColor: '#FEF2F2',
+                border: '1px solid #FECACA',
+                borderRadius: 12,
+                padding: '10px 14px',
+                color: '#DC2626',
+                fontSize: 13,
+              }}>
                 {error}
-              </p>
+              </div>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 rounded-xl text-white text-sm font-bold transition-opacity disabled:opacity-60 flex items-center justify-center gap-2"
-              style={{ backgroundColor: '#3A4A54' }}
+              style={{
+                marginTop: 4,
+                width: '100%',
+                padding: '16px',
+                backgroundColor: loading ? '#9CA3AF' : '#3A4A54',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: 12,
+                fontSize: 15,
+                fontWeight: 700,
+                cursor: loading ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+                transition: 'background-color 0.15s',
+              }}
+              onMouseEnter={e => { if (!loading) (e.currentTarget.style.backgroundColor = '#FF6B35') }}
+              onMouseLeave={e => { if (!loading) (e.currentTarget.style.backgroundColor = '#3A4A54') }}
             >
               {loading ? (
                 <>
-                  <svg className="animate-spin w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="3" opacity="0.3" />
-                    <path d="M12 2a10 10 0 0 1 10 10" stroke="white" strokeWidth="3" strokeLinecap="round" />
-                  </svg>
+                  <SpinnerIcon />
                   Signing in…
                 </>
-              ) : (
-                'Continue'
-              )}
+              ) : 'Continue'}
             </button>
+
           </form>
 
-          <p className="text-[11px] text-gray-400 mt-6 leading-relaxed">
+          {/* Disclaimer */}
+          <p style={{
+            marginTop: 20,
+            fontSize: 12,
+            color: '#9CA3AF',
+            lineHeight: 1.6,
+          }}>
             This portal is for authorised Loadly admins only.
             Unauthorised access attempts are logged.
           </p>
+
         </div>
       </main>
     </div>
+  )
+}
+
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  backgroundColor: '#F3F4F6',
+  border: '2px solid transparent',
+  borderRadius: 12,
+  padding: '15px 16px',
+  fontSize: 14,
+  color: '#111827',
+  outline: 'none',
+  transition: 'border-color 0.15s',
+}
+
+function SpinnerIcon() {
+  return (
+    <svg
+      style={{ animation: 'spin 0.8s linear infinite', width: 16, height: 16, flexShrink: 0 }}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+      <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="3" strokeOpacity="0.3" />
+      <path d="M12 2a10 10 0 0 1 10 10" stroke="white" strokeWidth="3" strokeLinecap="round" />
+    </svg>
   )
 }
