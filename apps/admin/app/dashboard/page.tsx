@@ -1,13 +1,10 @@
-import { createServerClient } from '@/lib/supabase-server'
-import { redirect } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
+import { requireAdmin } from '@/lib/require-admin'
 import { TrendingUp, Truck, Clock, CheckCircle2, AlertCircle, ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function DashboardPage() {
-  const supabase = await createServerClient()
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) redirect('/login')
+  const { supabase } = await requireAdmin()
 
   const [
     { count: totalBookings },
@@ -104,7 +101,11 @@ export default async function DashboardPage() {
                 <p className="text-center text-gray-300 py-12 text-sm">No bookings yet</p>
               )}
               {(recentBookings ?? []).map((b: any) => (
-                <div key={b.id} className="flex items-center gap-4 px-6 py-3.5 hover:bg-gray-50 transition-colors">
+                <Link
+                  key={b.id}
+                  href={`/dashboard/bookings/${b.id}`}
+                  className="flex items-center gap-4 px-6 py-3.5 hover:bg-gray-50 transition-colors"
+                >
                   <div
                     className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-white text-xs font-bold"
                     style={{ backgroundColor: vehicleColor(b.vehicle_category) }}
@@ -121,7 +122,7 @@ export default async function DashboardPage() {
                       {new Date(b.created_at).toLocaleDateString()}
                     </p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

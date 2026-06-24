@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { createBrowserClient } from '@/lib/supabase-browser'
-import Image from 'next/image'
 
 export default function AdminLoginPage() {
   const supabase = createBrowserClient()
@@ -44,24 +43,26 @@ export default function AdminLoginPage() {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif',
     }}>
 
-      {/* ── Top bar ───────────────────────────────────── */}
+      {/* ── Top bar — Uber-style wordmark ── */}
       <header style={{
         backgroundColor: '#3A4A54',
-        height: 64,
+        height: 72,
         display: 'flex',
         alignItems: 'center',
-        paddingLeft: 28,
-        paddingRight: 28,
+        paddingLeft: 24,
+        paddingRight: 24,
         flexShrink: 0,
       }}>
-        <Image
-          src="/logo.png"
-          alt="Loadly"
-          width={100}
-          height={40}
-          style={{ objectFit: 'contain' }}
-          priority
-        />
+        <span style={{
+          color: '#ffffff',
+          fontSize: 24,
+          fontWeight: 600,
+          letterSpacing: '-0.02em',
+          lineHeight: 1,
+          userSelect: 'none',
+        }}>
+          Loadly
+        </span>
       </header>
 
       {/* ── Page body ─────────────────────────────────── */}

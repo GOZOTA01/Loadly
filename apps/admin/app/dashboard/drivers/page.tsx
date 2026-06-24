@@ -1,10 +1,10 @@
-import { createServerClient } from '@/lib/supabase-server'
 import { Header } from '@/components/layout/Header'
+import { requireAdmin } from '@/lib/require-admin'
 import { ApproveDriverButton } from './ApproveDriverButton'
 import { CheckCircle2, Clock, XCircle } from 'lucide-react'
 
 export default async function DriversPage() {
-  const supabase = await createServerClient()
+  const { supabase } = await requireAdmin()
 
   const { data: drivers } = await supabase
     .from('driver_profiles')

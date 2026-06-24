@@ -1,8 +1,8 @@
-import { createServerClient } from '@/lib/supabase-server'
 import { Header } from '@/components/layout/Header'
+import { requireAdmin } from '@/lib/require-admin'
 
 export default async function AnalyticsPage() {
-  const supabase = await createServerClient()
+  const { supabase } = await requireAdmin()
 
   const [
     { count: totalBookings },

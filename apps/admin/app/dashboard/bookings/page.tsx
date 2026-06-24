@@ -1,8 +1,9 @@
-import { createServerClient } from '@/lib/supabase-server'
+import Link from 'next/link'
 import { Header } from '@/components/layout/Header'
+import { requireAdmin } from '@/lib/require-admin'
 
 export default async function BookingsPage() {
-  const supabase = await createServerClient()
+  const { supabase } = await requireAdmin()
 
   const { data: bookings } = await supabase
     .from('bookings')
@@ -29,8 +30,12 @@ export default async function BookingsPage() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {(bookings ?? []).map((b: any) => (
-                <tr key={b.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-3.5 font-medium text-gray-800 max-w-[150px] truncate">{b.pickup_address}</td>
+                <tr key={b.id} className="hover:bg-gray-50 transition-colors cursor-pointer">
+                  <td className="px-6 py-3.5 font-medium text-gray-800 max-w-[150px]">
+                    <Link href={`/dashboard/bookings/${b.id}`} className="block truncate hover:text-[#FF6B35]">
+                      {b.pickup_address}
+                    </Link>
+                  </td>
                   <td className="px-6 py-3.5 text-gray-500 max-w-[150px] truncate">{b.dropoff_address}</td>
                   <td className="px-6 py-3.5 text-gray-600 capitalize text-xs font-semibold">{b.vehicle_category?.replace(/_/g, ' ')}</td>
                   <td className="px-6 py-3.5 text-center">

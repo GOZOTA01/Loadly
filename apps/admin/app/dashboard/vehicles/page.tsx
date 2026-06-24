@@ -1,9 +1,9 @@
-import { createServerClient } from '@/lib/supabase-server'
 import { Header } from '@/components/layout/Header'
+import { requireAdmin } from '@/lib/require-admin'
 import { ApproveVehicleButton } from './ApproveVehicleButton'
 
 export default async function VehiclesPage() {
-  const supabase = await createServerClient()
+  const { supabase } = await requireAdmin()
 
   const { data: vehicles } = await supabase
     .from('vehicles')
